@@ -1,5 +1,7 @@
 package ast
 
+import "github.com/kanapuli/kurangu/token"
+
 type Node interface {
 	// TokenLiteral is used only for debugging and testing
 	TokenLiteral() string
@@ -26,4 +28,29 @@ func (p *Program) TokenLiteral() string {
 		return p.Statements[0].TokenLiteral()
 	}
 	return ""
+}
+
+// LetStatement symbolizes a kurangu let statement
+// let a  = 90; Here let - Token. a - Name. 90 - Value
+type LetStatement struct {
+	Token token.Token // token.LET statement
+	Name  *Identifier
+	Value Expression
+}
+
+func (ls *LetStatement) statementNode() {}
+
+func (ls *LetStatement) TokenLiteral() string {
+	return ls.Token.Literal
+}
+
+type Identifier struct {
+	Token token.Token // token.IDENT token
+	Value string
+}
+
+func (i *Identifier) expressionNode() {}
+
+func (i *Identifier) TokenLiteral() string {
+	return i.Token.Literal
 }
